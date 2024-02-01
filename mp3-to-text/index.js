@@ -27,7 +27,7 @@ async function getAIResponse(input, request) {
       { role: "user", content: request },
       { role: "assistant", content: input },
     ],
-    model: "gpt-3.5-turbo",
+    model: 'gpt-4-1106-preview'
   });
 
   return completion.choices[0].message.content; // Assuming we want the content of the message
@@ -39,21 +39,24 @@ app.post('/api/transcription', upload.single('file'), async (req, res) => {
   }
 
   try {
+
     const transcription = await openai.audio.transcriptions.create({
       file: fs.createReadStream(req.file.path),
-      model: 'whisper-1',
+      model: 'whisper-1'      
     });
 
     // Delete the file after processing
     fs.unlinkSync(req.file.path);
 
     // Get a summary (or any other response) from the AI based on the transcription
-    const summary = await getAIResponse(transcription.text, "Generate a summary for this text:");
+    const itnroMessage = await getAIResponse(transcription.text, "your name Chef Dana and your goal is to greet users to the amazing chef Dana app. user:hi, my name is Avi and i really love cookies. ai response: Hello Avi, so happy to meet you ... today im gonna teach how to create the best cookies ever:");
+    const recipe = await getAIResponse(transcription.text, "your name Chef Dana and your goal is to generate recipes based user stories. Generate a recipe idea with ingreidents, steps and guidelines for this request:");
 
     // Send both the transcription and the summary
     res.json({ 
       transcription: transcription.text,
-      summary: summary
+      intro: itnroMessage,
+      recipe: recipe
     });
 
   } catch (error) {
