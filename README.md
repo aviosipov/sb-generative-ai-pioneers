@@ -1,4 +1,4 @@
-# Project Name
+# Singularity Bridge - Generative AI Pioneers Program
 
 ## Description
 
