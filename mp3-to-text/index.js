@@ -19,7 +19,6 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-// Utility function to get AI response
 async function getAIResponse(input, request) {
   const completion = await openai.chat.completions.create({
     messages: [
@@ -27,7 +26,7 @@ async function getAIResponse(input, request) {
       { role: "user", content: request },
       { role: "assistant", content: input },
     ],
-    model: 'gpt-4-1106-preview'
+    model: 'gpt-3.5-turbo-1106'
   });
 
   return completion.choices[0].message.content; // Assuming we want the content of the message
@@ -45,18 +44,16 @@ app.post('/api/transcription', upload.single('file'), async (req, res) => {
       model: 'whisper-1'      
     });
 
-    // Delete the file after processing
+    
     fs.unlinkSync(req.file.path);
-
-    // Get a summary (or any other response) from the AI based on the transcription
-    const itnroMessage = await getAIResponse(transcription.text, "your name Chef Dana and your goal is to greet users to the amazing chef Dana app. user:hi, my name is Avi and i really love cookies. ai response: Hello Avi, so happy to meet you ... today im gonna teach how to create the best cookies ever:");
-    const recipe = await getAIResponse(transcription.text, "your name Chef Dana and your goal is to generate recipes based user stories. Generate a recipe idea with ingreidents, steps and guidelines for this request:");
-
-    // Send both the transcription and the summary
+    
+    const summary = await getAIResponse(transcription.text, "generate a summary of the following text:");
+    const topic = await getAIResponse(transcription.text, "what is the topic of the following text? text:");
+    
     res.json({ 
       transcription: transcription.text,
-      intro: itnroMessage,
-      recipe: recipe
+      summary: summary,
+      topic: topic
     });
 
   } catch (error) {

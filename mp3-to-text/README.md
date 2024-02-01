@@ -19,13 +19,13 @@ This project is designed to provide an API endpoint for transcribing audio files
 
 1. Clone the repository to your local machine.
 2. Run `npm install` to install all the dependencies.
-3. Create a `.env` file in the root directory and add your OpenAI API key: OPENAI_API_KEY=your_api_key_here
+3. Create a `.env` file in the root directory and add your OpenAI API key: OPENAI_API_KEY=your_api_key_here, you can use .env.sample as a reference.
 
 
 ### Running the Application
 
-- To start the application in production mode, use:
-- To start the application in development mode with nodemon (which auto-restarts the server on code changes), use:
+- To start the application in production mode, use: npm start
+- To start the application in development mode with nodemon (which auto-restarts the server on code changes), use: npm run dev
 
 
 ## Usage
